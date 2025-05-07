@@ -1,11 +1,20 @@
 param (
-    [string]$ProjectPath,
+    [string]$ProjectName,
+    [string]$ProjectPath = $null,
     [string]$RemoteUrl = $null
 )
 
-# Load Git identity from config
-$ConfigPath = "$PSScriptRoot\..\Common\identity.conf"
+# Resolve default path if not explicitly provided
+if (-not $ProjectPath) {
+    if (-not $ProjectName) {
+        Write-Host "❌ You must specify either -ProjectName or -ProjectPath"
+        exit 1
+    }
+    $ProjectPath = "D:\OneDrive\testProjects\$ProjectName"
+}
 
+# Load Git identity from Common folder
+$ConfigPath = "$PSScriptRoot\..\Common\identity.conf"
 if (-not (Test-Path $ConfigPath)) {
     Write-Host "❌ Missing config: $ConfigPath"
     exit 1
