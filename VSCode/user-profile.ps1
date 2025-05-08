@@ -1,40 +1,19 @@
 # --------------------------------------------------
-# Mark's Portable PowerShell Profile (Fixed Version)
+# Mark's Portable PowerShell Profile (Simplified)
 # Location: mark-dev-tools\VSCode\user-profile.ps1
 # --------------------------------------------------
 
 Write-Host ""
 Write-Host "=== Loading Mark's PowerShell profile ==="
 
-# Set core paths
-$toolsPath = "D:\OneDrive\git\mark-dev-tools\PowerShell"
-$testProjectsPath = "D:\OneDrive\testProjects"
-$initScript = Join-Path $toolsPath "Init-GitProject.ps1"
+# Alias to the init script
+$initScript = "D:\OneDrive\git\mark-dev-tools\PowerShell\Init-GitProject.ps1"
 
-# Ensure testProjects folder exists
-if (-not (Test-Path $testProjectsPath)) {
-    Write-Host "Creating missing folder: $testProjectsPath"
-    New-Item -ItemType Directory -Path $testProjectsPath | Out-Null
-}
-
-# Load initgit and initgitremote if script exists
 if (Test-Path $initScript) {
     Set-Alias initgit $initScript
-
-    function initgitremote {
-        param (
-            [string]$ProjectName,
-            [string]$ProjectPath = $null,
-            [string]$RemoteUrl = $null,
-            [switch]$MakePublic = $false
-        )
-        & $initScript -ProjectName $ProjectName -ProjectPath $ProjectPath -RemoteUrl $RemoteUrl -UseRemote -MakePublic:$MakePublic
-    }
-
-    Write-Host "  initgit       → Local-only Git project setup"
-    Write-Host "  initgitremote → Git project setup with GitHub remote"
+    Write-Host "  initgit - Local and optionally remote Git project setup.  initgit --help for usage."
 } else {
-    Write-Warning "Init script not found at $initScript � initgit/initgitremote not loaded."
+    Write-Warning "Init script not found at $initScript - initgit not loaded."
 }
 
 # Optional: Per-machine logic
