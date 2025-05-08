@@ -2,7 +2,8 @@ param (
     [string]$ProjectName,
     [string]$ProjectPath = $null,
     [string]$RemoteUrl = $null,
-    [switch]$UseRemote = $false
+    [switch]$UseRemote = $false,
+    [switch]$MakePublic = $false
 )
 
 # Resolve default path if not explicitly provided
@@ -67,8 +68,11 @@ if ($UseRemote) {
 
     $repoCheck = gh repo view mackenmd/$ProjectName 2>$null
     if (-not $repoCheck) {
-        Write-Host "Creating remote GitHub repo: mackenmd/$ProjectName"
-        gh repo create mackenmd/$ProjectName --public --source . --remote origin --push
+        # Determine visibility from switch
+        $visibility = if ($MakePublic.IsPresent) { "--public" } else { "--private" }
+
+        Write-Host "Creating remote GitHub repo: mackenmd/$ProjectName ($visibility)"
+        gh repo create mackenmd/$ProjectName $visibility --source . --remote origin --push
     } else {
         git remote add origin $RemoteUrl
         git branch -M main

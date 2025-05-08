@@ -25,15 +25,16 @@ if (Test-Path $initScript) {
         param (
             [string]$ProjectName,
             [string]$ProjectPath = $null,
-            [string]$RemoteUrl = $null
+            [string]$RemoteUrl = $null,
+            [switch]$MakePublic = $false
         )
-        & $initScript -ProjectName $ProjectName -ProjectPath $ProjectPath -RemoteUrl $RemoteUrl -UseRemote
+        & $initScript -ProjectName $ProjectName -ProjectPath $ProjectPath -RemoteUrl $RemoteUrl -UseRemote -MakePublic:$MakePublic
     }
 
     Write-Host "  initgit       → Local-only Git project setup"
     Write-Host "  initgitremote → Git project setup with GitHub remote"
 } else {
-    Write-Warning "Init script not found at $initScript � initgit/initgitremote not loaded."
+    Write-Warning "Init script not found at $initScript � initgit/initgitremote not loaded."
 }
 
 # Optional: Per-machine logic
